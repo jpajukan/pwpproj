@@ -1,0 +1,19 @@
+{
+  "properties": {
+    "name": {
+      "description": "Name of the `register`, must be unique",
+      "example": "Cafeteria",
+      "maxLength": 64,
+      "type": "string"
+    },
+    "type": {
+      "default": 0,
+      "description": "Type of the `register`, 0 for regular and 1 for administrative, defaults to 0",
+      "example": 0,
+      "maximum": 1,
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}

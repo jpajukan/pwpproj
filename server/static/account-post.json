@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "name": {
+      "description": "Name of the `account`, must be unique within `user`",
+      "example": "Food account",
+      "maxLength": 64,
+      "type": "string"
+    },
+    "user_id": {
+      "description": "Numeric ID of the `user`",
+      "example": 1,
+      "format": "int64",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "name",
+    "user_id"
+  ],
+  "type": "object"
+}

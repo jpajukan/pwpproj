@@ -1,0 +1,23 @@
+{
+  "properties": {
+    "email": {
+      "description": "Email address of the `user`, must be unique",
+      "example": "john.doe@example.com",
+      "maxLength": 64,
+      "type": "string"
+    },
+    "name": {
+      "description": "Name of the `user`",
+      "example": "John Doe",
+      "maxLength": 64,
+      "type": "string"
+    },
+    "phone": {
+      "description": "Phone number of the `user`",
+      "example": "+358400123123",
+      "maxLength": 20,
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

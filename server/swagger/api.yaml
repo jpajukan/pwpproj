@@ -1,0 +1,1477 @@
+swagger: '2.0'
+
+# TODO: Utilize allOf all around the file
+# I learned how to use it too late and the whole file is a holy mess due all the copy and paste,
+# but I don't have the time or energy to refactor it. Someone else's problem, probably future me.
+
+info:
+  version: "0.1"
+  title: Cash register system API
+consumes:
+  - application/json
+produces:
+  - application/vnd.mason+json
+
+paths:
+  /admins:
+    get:
+      tags:
+        - admin
+      summary: Get `admin` objects
+      operationId: api.admins.get_all
+      responses:
+        200:
+          description: Return `admin`s
+          schema:
+            $ref: '#/definitions/Admins'
+    post:
+      tags:
+        - admin
+      summary: Create new `admin` object
+      operationId: api.admins.post
+      parameters:
+        - $ref: '#/parameters/admin'
+      responses:
+        201:
+          description: New `admin` created
+          schema:
+            $ref: '#/definitions/Admin'
+        400:
+          description: Invalid input
+        409:
+          description: Conflict
+        412:
+          description: Precondition failed
+  /admins/{admin_id}:
+    get:
+      tags:
+        - admin
+      summary: Get `admin` object based on admin ID
+      operationId: api.admins.get
+      parameters:
+        - $ref: '#/parameters/admin_id'
+      responses:
+        200:
+          description: Return `admin`
+          schema:
+            $ref: '#/definitions/Admin'
+        404:
+          description: Object not found
+    patch:
+      tags:
+        - admin
+      summary: Change `admin` password
+      operationId: api.admins.patch
+      parameters:
+        - $ref: '#/parameters/admin_id'
+        - name: password
+          in: body
+          description: Password of the `admin` user
+          required: true
+          schema:
+            type: object
+            required:
+              - password
+            properties:
+              password:
+                type: string
+                format: password
+                minLength: 8
+                maxLength: 64
+      responses:
+        200:
+          description: Admin updated
+          schema:
+            $ref: '#/definitions/Admin'
+        400:
+          description: Invalid input
+        404:
+          description: Object not found
+        409:
+          description: Conflict
+        412:
+          description: Precondition failed
+    delete:
+      tags:
+        - admin
+      summary: Delete `admin`
+      operationId: api.admins.delete
+      parameters:
+        - $ref: '#/parameters/admin_id'
+      responses:
+        200:
+          description: Admin deleted
+        404:
+          description: Object not found
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get `user` objects
+      operationId: api.users.get_all
+      responses:
+        200:
+          description: Return `user`s
+          schema:
+            $ref: '#/definitions/Users'
+    post:
+      tags:
+        - user
+      summary: Create new `user` object
+      operationId: api.users.post
+      parameters:
+        - $ref: '#/parameters/user'
+      responses:
+        201:
+          description: New `user` created
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Invalid input
+        409:
+          description: Conflict
+  /users/{user_id}:
+    get:
+      tags:
+        - user
+      summary: Get `user` object based on user ID
+      operationId: api.users.get
+      parameters:
+        - $ref: '#/parameters/user_id'
+      responses:
+        200:
+          description: Return `user`
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: Object not found
+    patch:
+      tags:
+        - user
+      summary: Update existing `user`
+      operationId: api.users.patch
+      parameters:
+        - $ref: '#/parameters/user_id'
+        - $ref: '#/parameters/user_patch'
+      responses:
+        200:
+          description: User updated
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Invalid input
+        404:
+          description: Object not found
+        409:
+          description: Conflict
+    delete:
+      tags:
+        - user
+      summary: Delete `user`
+      operationId: api.users.delete
+      parameters:
+        - $ref: '#/parameters/user_id'
+      responses:
+        200:
+          description: User deleted
+        404:
+          description: Object not found
+  /accounts:
+    get:
+      tags:
+        - account
+      summary: Get `account` objects
+      operationId: api.accounts.get_all
+      responses:
+        200:
+          description: Return `account`s
+          schema:
+            $ref: '#/definitions/Accounts'
+    post:
+      tags:
+        - account
+      summary: Create new `account` object
+      operationId: api.accounts.post
+      parameters:
+        - $ref: '#/parameters/account'
+      responses:
+        201:
+          description: New `account` created
+          schema:
+            $ref: '#/definitions/Account'
+        400:
+          description: Invalid input
+        409:
+          description: Conflict
+        412:
+          description: Precondition failed
+  /accounts/{account_id}:
+    get:
+      tags:
+        - account
+      summary: Get `account` object based on account ID
+      operationId: api.accounts.get
+      parameters:
+        - $ref: '#/parameters/account_id'
+      responses:
+        200:
+          description: Return `account`
+          schema:
+            $ref: '#/definitions/Account'
+        404:
+          description: Object not found
+    patch:
+      tags:
+        - account
+      summary: Update existing `account`
+      operationId: api.accounts.patch
+      parameters:
+        - $ref: '#/parameters/account_id'
+        - $ref: '#/parameters/account_patch'
+      responses:
+        200:
+          description: Account updated
+          schema:
+            $ref: '#/definitions/Account'
+        400:
+          description: Invalid input
+        404:
+          description: Object not found
+        409:
+          description: Conflict
+        412:
+          description: Precondition failed
+    delete:
+      tags:
+        - account
+      summary: Delete `account`
+      operationId: api.accounts.delete
+      parameters:
+        - $ref: '#/parameters/account_id'
+      responses:
+        200:
+          description: Account deleted
+        404:
+          description: Object not found
+  /cards:
+    get:
+      tags:
+        - card
+      summary: Get `card` objects
+      operationId: api.cards.get_all
+      responses:
+        200:
+          description: Return `card`s
+          schema:
+            $ref: '#/definitions/Cards'
+    post:
+      tags:
+        - card
+      summary: Create new `card` object
+      operationId: api.cards.post
+      parameters:
+        - $ref: '#/parameters/card'
+      responses:
+        201:
+          description: New `card` created
+          schema:
+            $ref: '#/definitions/Card'
+        400:
+          description: Invalid input
+        409:
+          description: Conflict
+        412:
+          description: Precondition failed
+  /cards/unassigned:
+    get:
+      tags:
+        - card
+      summary: Get `card` objects that are not assigned to any `account`
+      operationId: api.cards.get_unassigned
+      responses:
+        200:
+          description: Return `card`s
+          schema:
+            $ref: '#/definitions/Cards'
+  /cards/{card_sha}:
+    get:
+      tags:
+        - card
+      summary: Get `card` object based on card SHA
+      operationId: api.cards.get
+      parameters:
+        - $ref: '#/parameters/card_sha'
+      responses:
+        200:
+          description: Return `card`
+          schema:
+            $ref: '#/definitions/Card'
+        404:
+          description: Object not found
+    patch:
+      tags:
+        - card
+      summary: Update existing `card`
+      operationId: api.cards.patch
+      parameters:
+        - $ref: '#/parameters/card_sha'
+        - $ref: '#/parameters/card_patch'
+      responses:
+        200:
+          description: Card updated
+          schema:
+            $ref: '#/definitions/Card'
+        400:
+          description: Invalid input
+        404:
+          description: Object not found
+        409:
+          description: Conflict
+        412:
+          description: Precondition failed
+    delete:
+      tags:
+        - card
+      summary: Delete `card`
+      operationId: api.cards.delete
+      parameters:
+        - $ref: '#/parameters/card_sha'
+      responses:
+        200:
+          description: Card deleted
+        404:
+          description: Object not found
+  /registers:
+    get:
+      tags:
+        - register
+      summary: Get `register` objects
+      operationId: api.registers.get_all
+      responses:
+        200:
+          description: Return `register`s
+          schema:
+            $ref: '#/definitions/Registers'
+    post:
+      tags:
+        - register
+      summary: Create new `register` object
+      operationId: api.registers.post
+      parameters:
+        - $ref: '#/parameters/register'
+      responses:
+        201:
+          description: New `register` created
+          schema:
+            $ref: '#/definitions/Register'
+        400:
+          description: Invalid input
+  /registers/{register_sha}:
+    get:
+      tags:
+        - register
+      summary: Get `register` object based on register SHA
+      operationId: api.registers.get
+      parameters:
+        - $ref: '#/parameters/register_sha'
+      responses:
+        200:
+          description: Return `register`
+          schema:
+            $ref: '#/definitions/Register'
+        404:
+          description: Object not found
+    patch:
+      tags:
+        - register
+      summary: Update existing `register`
+      operationId: api.registers.patch
+      parameters:
+        - $ref: '#/parameters/register_sha'
+        - $ref: '#/parameters/register_patch'
+      responses:
+        200:
+          description: Register updated
+          schema:
+            $ref: '#/definitions/Register'
+        400:
+          description: Invalid input
+        404:
+          description: Object not found
+    delete:
+      tags:
+        - register
+      summary: Delete `register`
+      operationId: api.registers.delete
+      parameters:
+        - $ref: '#/parameters/register_sha'
+      responses:
+        200:
+          description: Register deleted
+        404:
+          description: Object not found
+  /transactions:
+    get:
+      tags:
+        - transaction
+      summary: Get `transaction` objects
+      operationId: api.transactions.get_all
+      parameters:
+        - $ref: '#/parameters/page'
+      responses:
+        200:
+          description: Return `transaction`s
+          schema:
+            $ref: '#/definitions/Transactions'
+    post:
+      tags:
+        - transaction
+      summary: Create new `transaction` object
+      operationId: api.transactions.post
+      parameters:
+        - $ref: '#/parameters/transaction'
+      responses:
+        201:
+          description: New `transaction` created
+          schema:
+            $ref: '#/definitions/Transaction'
+        400:
+          description: Invalid input
+        412:
+          description: Precondition failed
+  /transactions/{transaction_id}:
+    get:
+      tags:
+        - transaction
+      summary: Get `transaction` object based on transaction ID
+      operationId: api.transactions.get
+      parameters:
+        - $ref: '#/parameters/transaction_id'
+      responses:
+        200:
+          description: Return `transaction`
+          schema:
+            $ref: '#/definitions/Transaction'
+        404:
+          description: Object not found
+  /transactions/register/{register_sha}:
+    get:
+      tags:
+        - transaction
+      summary: Get `transaction` objects with given related `register` SHA
+      operationId: api.transactions.get_by_register
+      parameters:
+        - $ref: '#/parameters/register_sha'
+        - $ref: '#/parameters/page'
+      responses:
+        200:
+          description: Return `transaction`s
+          schema:
+            allOf:
+              - $ref: '#/definitions/Transactions'
+              - properties:
+                  next:
+                    example: /transactions/register/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148/?page=5
+                  previous:
+                    example: /transactions/register/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148/?page=3
+        404:
+          description: Object not found
+  /transactions/user/{user_id}:
+    get:
+      tags:
+        - transaction
+      summary: Get `transaction` objects with given related `user` ID
+      operationId: api.transactions.get_by_user
+      parameters:
+        - $ref: '#/parameters/user_id'
+        - $ref: '#/parameters/page'
+      responses:
+        200:
+          description: Return `transaction`s
+          schema:
+            allOf:
+              - $ref: '#/definitions/Transactions'
+              - properties:
+                  next:
+                    example: /transactions/user/1/?page=5
+                  previous:
+                    example: /transactions/user/1/?page=3
+        404:
+          description: Object not found
+  /transactions/account/{account_id}:
+    get:
+      tags:
+        - transaction
+      summary: Get `transaction` objects with given related `account` ID
+      operationId: api.transactions.get_by_account
+      parameters:
+        - $ref: '#/parameters/account_id'
+        - $ref: '#/parameters/page'
+      responses:
+        200:
+          description: Return `transaction`s
+          schema:
+            allOf:
+              - $ref: '#/definitions/Transactions'
+              - properties:
+                  next:
+                    example: /transactions/account/1/?page=5
+                  previous:
+                    example: /transactions/account/1/?page=3
+        404:
+          description: Object not found
+  /transactions/card/{card_sha}:
+    get:
+      tags:
+        - transaction
+      summary: Get `transaction` objects with given related `card` SHA
+      operationId: api.transactions.get_by_card
+      parameters:
+        - $ref: '#/parameters/card_sha'
+        - $ref: '#/parameters/page'
+      responses:
+        200:
+          description: Return `transaction`s
+          schema:
+            allOf:
+              - $ref: '#/definitions/Transactions'
+              - properties:
+                  next:
+                    example: /transactions/card/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88/?page=5
+                  previous:
+                    example: /transactions/card/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88/?page=3
+        404:
+          description: Object not found
+
+definitions:
+  Admin:
+    type: object
+    required:
+      - admin_id
+      - user
+    properties:
+      admin_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `admin`
+        example: 1
+        readOnly: true
+      user:
+        $ref: '#/definitions/User-id'
+      "@controls":
+        $ref: '#/definitions/Admin-controls'
+  Admin-json:
+    type: object
+    required:
+      - user_id
+      - password
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `user`
+        example: 1
+      password:
+        type: string
+        format: password
+        description: Password of the `admin` user
+        minLength: 8
+        maxLength: 64
+        example: v3rys3cr3t
+  Admin-json-edit:
+    type: object
+    required:
+      - password
+    properties:
+      password:
+        type: string
+        format: password
+        description: Password of the `admin` user
+        minLength: 8
+        maxLength: 64
+        example: v3rys3cr3t
+  Admin-controls:
+    type: object
+    properties:
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+            example: /admins/get/1
+      "cr:create-admin":
+        type: object
+        properties:
+          href:
+            type: string
+            default: /admins
+          title:
+            type: string
+            default: Create new admin
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: POST
+          schema:
+            $ref: '#/definitions/Admin-json'
+      "cr:edit-admin":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /admins/patch/1
+          title:
+            type: string
+            default: Edit this admin
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: PATCH
+          schema:
+            $ref: '#/definitions/Admin-json-edit'
+      "cr:delete-admin":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /admins/delete/1
+          title:
+            type: string
+            default: Delete this admin
+          method:
+            type: string
+            default: DELETE
+  Admins:
+    type: array
+    items:
+      $ref: '#/definitions/Admin'
+  User:
+    type: object
+    required:
+      - user_id
+      - name
+      - email
+      - phone
+      - accounts
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `user`
+        example: 1
+        readOnly: true
+      name:
+        type: string
+        description: Name of the user
+        example: John Doe
+      email:
+        type: string
+        description: Email address of the `user`, must be unique
+        example: john.doe@example.com
+      phone:
+        type: string
+        description: Phone number of the `user`
+        example: "+358400123123"
+        default: ""
+      accounts:
+        $ref: '#/definitions/Account-ids'
+      "@controls":
+        $ref: '#/definitions/User-controls'
+  User-json: &user_json
+    type: object
+    properties:
+      name:
+        type: string
+        maxLength: 64
+        description: Name of the `user`
+        example: John Doe
+      email:
+        type: string
+        maxLength: 64
+        description: Email address of the `user`, must be unique
+        example: john.doe@example.com
+      phone:
+        type: string
+        maxLength: 20
+        description: Phone number of the `user`
+        example: "+358400123123"
+  User-post-json:
+    <<: *user_json
+    required:
+      - name
+      - email
+  User-id:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `user`
+        example: 1
+        readOnly: true
+      title:
+        type: string
+        default: Related user ID
+      "@controls":
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+                example: /users/1
+  User-ids:
+    type: array
+    items:
+      $ref: '#/definitions/User-id'
+  User-controls:
+    type: object
+    properties:
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+            example: /users/get/1
+      "cr:create-user":
+        type: object
+        properties:
+          href:
+            type: string
+            default: /users
+          title:
+            type: string
+            default: Create new user
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: POST
+          schema:
+            $ref: '#/definitions/User-post-json'
+      "cr:edit-user":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /users/patch/1
+          title:
+            type: string
+            default: Edit this user
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: PATCH
+          schema:
+            $ref: '#/definitions/User-json'
+      "cr:delete-user":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /users/delete/1
+          title:
+            type: string
+            default: Delete this user
+          method:
+            type: string
+            default: DELETE
+      "cr:user-transactions":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /transactions/user/1
+          title:
+            type: string
+            default: Get transactions of this user
+          method:
+            type: string
+            default: GET
+  Users:
+    type: array
+    items:
+      $ref: '#/definitions/User'
+  Account:
+    type: object
+    required:
+      - account_id
+      - name
+      - balance
+      - user
+      - cards
+    properties:
+      account_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `account`
+        example: 1
+        readOnly: true
+      name:
+        type: string
+        description: The name of the `account`, must be unique within a `user`
+        example: Food account
+      balance:
+        type: number
+        format: double
+        description: The balance of the `account`
+        example: 1337.6
+        readOnly: true
+      user:
+        $ref: '#/definitions/User-id'
+      cards:
+        $ref: '#/definitions/Card-shas'
+      "@controls":
+        $ref: '#/definitions/Account-controls'
+  Account-json: &account_json
+    type: object
+    properties:
+      name:
+        type: string
+        maxLength: 64
+        description: Name of the `account`, must be unique within `user`
+        example: Food account
+      user_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `user`
+        example: 1
+  Account-json-post:
+    <<: *account_json
+    required:
+      - name
+      - user_id
+  Account-id:
+    type: object
+    properties:
+      account_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `account`
+        example: 1
+        readOnly: true
+      title:
+        type: string
+        default: Related account ID
+      "@controls":
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+                example: /accounts/1
+  Account-ids:
+    type: array
+    items:
+      $ref: '#/definitions/Account-id'
+  Account-controls:
+    type: object
+    properties:
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+            example: /accounts/get/1
+      "cr:create-account":
+        type: object
+        properties:
+          href:
+            type: string
+            default: /accounts
+          title:
+            type: string
+            default: Create new account
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: POST
+          schema:
+            $ref: '#/definitions/Account-json'
+      "cr:edit-account":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /accounts/patch/1
+          title:
+            type: string
+            default: Edit this account
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: PATCH
+          schema:
+            $ref: '#/definitions/Account-json'
+      "cr:delete-account":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /accounts/delete/1
+          title:
+            type: string
+            default: Delete this account
+          method:
+            type: string
+            default: DELETE
+      "cr:account-transactions":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /transactions/account/1
+          title:
+            type: string
+            default: Get transactions of this account
+          method:
+            type: string
+            default: GET
+  Accounts:
+    type: array
+    items:
+      $ref: '#/definitions/Account'
+  Card:
+    type: object
+    required:
+      - card_sha
+      - name
+      - account
+    properties:
+      card_sha:
+        type: string
+        description: SHA256 hash of the `card`, must be unique
+        example: 8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+        readOnly: true
+      name:
+        type: string
+        description: Name of the `card`, must be unique within `account` and `user`
+        example: Student card
+      account:
+        $ref: '#/definitions/Account-id'
+      "@controls":
+        $ref: '#/definitions/Card-controls'
+  Card-json:
+    type: object
+    required:
+      - card_sha
+    properties:
+      card_sha:
+        type: string
+        minLength: 64
+        maxLength: 128
+        description: SHA256 hash of the `card`, must be unique
+        example: 8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+      name:
+        type: string
+        maxLength: 64
+        description: Name of the `card`, must be unique within `account` and `user`
+        example: Student card
+      account_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `account`
+        example: 1
+  Card-json-edit:
+    type: object
+    properties:
+      name:
+        type: string
+        maxLength: 64
+        description: Name of the `card`, must be unique within `account` and `user`
+        example: Student card
+      account_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `account`
+        example: 1
+  Card-sha:
+    type: object
+    properties:
+      card_sha:
+        type: string
+        description: SHA256 hash of the `card`, must be unique
+        example: 8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+        readOnly: true
+      title:
+        type: string
+        default: Related card SHA
+      "@controls":
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+                example: /cards/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+  Card-shas:
+    type: array
+    items:
+      $ref: '#/definitions/Card-sha'
+  Card-controls:
+    type: object
+    properties:
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+            example: /cards/get/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+      "cr:create-card":
+        type: object
+        properties:
+          href:
+            type: string
+            default: /cards
+          title:
+            type: string
+            default: Create new card
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: POST
+          schema:
+            $ref: '#/definitions/Card-json'
+      "cr:edit-card":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /cards/patch/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+          title:
+            type: string
+            default: Edit this card
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: PATCH
+          schema:
+            $ref: '#/definitions/Card-json-edit'
+      "cr:delete-card":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /cards/delete/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+          title:
+            type: string
+            default: Delete this card
+          method:
+            type: string
+            default: DELETE
+      "cr:card-transactions":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /transactions/card/8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+          title:
+            type: string
+            default: Get transactions of this card
+          method:
+            type: string
+            default: GET
+  Cards:
+    type: array
+    items:
+      $ref: '#/definitions/Card'
+  Register:
+    type: object
+    required:
+      - register_sha
+      - name
+      - type
+    properties:
+      register_sha:
+        type: string
+        description: SHA256 hash of the `register`, must be unique
+        example: acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+        readOnly: true
+      name:
+        type: string
+        description: Name of the `register`, must be unique
+        example: Cafeteria
+      type:
+        type: integer
+        description: Type of the `register`, 0 for regular and 1 for administrative, defaults to 0
+        example: 0
+        minimum: 0
+        maximum: 1
+        default: 0
+      "@controls":
+        $ref: '#/definitions/Register-controls'
+  Register-json:
+    type: object
+    required:
+      - register_sha
+      - name
+    properties:
+      register_sha:
+        type: string
+        minLength: 64
+        maxLength: 128
+        description: SHA256 hash of the `register`, must be unique
+        example: acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+        readOnly: true
+      name:
+        type: string
+        maxLength: 64
+        description: Name of the `register`, must be unique
+        example: Cafeteria
+      type:
+        type: integer
+        description: Type of the `register`, 0 for regular and 1 for administrative, defaults to 0
+        example: 0
+        minimum: 0
+        maximum: 1
+        default: 0
+  Register-json-edit:
+    type: object
+    properties:
+      name:
+        type: string
+        maxLength: 64
+        description: Name of the `register`, must be unique
+        example: Cafeteria
+      type:
+        type: integer
+        description: Type of the `register`, 0 for regular and 1 for administrative, defaults to 0
+        example: 0
+        minimum: 0
+        maximum: 1
+        default: 0
+  Register-sha:
+    type: object
+    properties:
+      register_sha:
+        type: string
+        description: SHA256 hash of the `register`, must be unique
+        example: acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+        readOnly: true
+      title:
+        type: string
+        default: Related register SHA
+      "@controls":
+        type: object
+        properties:
+          self:
+            type: object
+            properties:
+              href:
+                type: string
+                example: /registers/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+  Register-shas:
+    type: array
+    items:
+      $ref: '#/definitions/Register-sha'
+  Register-controls:
+    type: object
+    properties:
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+            example: /registers/get/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+      "cr:create-register":
+        type: object
+        properties:
+          href:
+            type: string
+            default: /registers
+          title:
+            type: string
+            default: Create new register
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: POST
+          schema:
+            $ref: '#/definitions/Register-json'
+      "cr:edit-register":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /registers/patch/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+          title:
+            type: string
+            default: Edit this register
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: PATCH
+          schema:
+            $ref: '#/definitions/Register-json-edit'
+      "cr:delete-register":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /registers/delete/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+          title:
+            type: string
+            default: Delete this register
+          method:
+            type: string
+            default: DELETE
+      "cr:register-transactions":
+        type: object
+        properties:
+          href:
+            type: string
+            example: /transactions/register/acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+          title:
+            type: string
+            default: Get transactions of this register
+          method:
+            type: string
+            default: GET
+  Registers:
+    type: array
+    items:
+      $ref: '#/definitions/Register'
+  Transaction:
+    type: object
+    required:
+      - transaction_id
+      - card
+      - register
+      - balance_change
+      - timestamp
+    properties:
+      transaction_id:
+        type: integer
+        format: int64
+        description: Numeric ID of the `transaction`
+        example: 1
+        readOnly: true
+      card:
+        $ref: '#/definitions/Card-sha'
+      register:
+        $ref: '#/definitions/Register-sha'
+      balance_change:
+        type: number
+        format: double
+        description: Change in the `account` balance
+        example: -10.5
+      timestamp:
+        type: string
+        format: 'date-time'
+        description: Timestamp of the `transaction`
+        example: "2017-03-03T11:51:16.542719"
+        readOnly: true
+      "@controls":
+        $ref: '#/definitions/Transaction-controls'
+  Transaction-json:
+    type: object
+    required:
+      - card_sha
+      - register_sha
+      - balance_change
+    properties:
+      card_sha:
+        type: string
+        description: SHA256 hash of the `card`
+        example: 8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148
+      register_sha:
+        type: string
+        description: SHA256 hash of the `register`
+        example: acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88
+      balance_change:
+        type: number
+        format: double
+        description: Change in the `account` balance
+        example: -10.5
+  Transaction-controls:
+    type: object
+    properties:
+      self:
+        type: object
+        properties:
+          href:
+            type: string
+            example: /transactions/get/1
+      "cr:create-transaction":
+        type: object
+        properties:
+          href:
+            type: string
+            default: /transactions
+          title:
+            type: string
+            default: Create new transaction
+          encoding:
+            type: string
+            default: json
+          method:
+            type: string
+            default: POST
+          schema:
+            $ref: '#/definitions/Transaction-json'
+  Transactions:
+    allOf:
+      - $ref: '#/definitions/Paged'
+      - type: object
+        properties:
+          results:
+            type: array
+            maxItems: 100
+            items:
+              $ref: '#/definitions/Transaction'
+        required:
+          - results
+  Paged:
+    type: object
+    required:
+      - count
+    properties:
+      count:
+        type: integer
+        format: int64
+        description: The total amount of records in collection
+        example: 15233
+      next:
+        type: string
+        description: The URL of the next page of collection (not present if on the last page)
+        example: /transactions/?page=5
+      previous:
+        type: string
+        description: The URL of the previous page of collection (not present if on the first page)
+        example: /transactions/?page=3
+
+parameters:
+  admin_id:
+    name: admin_id
+    in: path
+    required: true
+    description: Numeric ID of the `admin`
+    type: integer
+    format: int64
+  user_id:
+    name: user_id
+    in: path
+    required: true
+    description: Numeric ID of the `user`
+    type: integer
+    format: int64
+  account_id:
+    name: account_id
+    in: path
+    required: true
+    description: Numeric ID of the `account`
+    type: integer
+    format: int64
+  card_sha:
+    name: card_sha
+    in: path
+    required: true
+    description: ID of the `card` in SHA256 format
+    type: string
+    minLength: 64
+    maxLength: 128
+  register_sha:
+    name: register_sha
+    in: path
+    required: true
+    description: ID of the `register` in SHA256 format
+    type: string
+    minLength: 64
+    maxLength: 128
+  transaction_id:
+    name: transaction_id
+    in: path
+    required: true
+    description: Numeric ID of the `transaction`
+    type: integer
+    format: int64
+  admin:
+    name: admin
+    in: body
+    description: The `admin` object as JSON
+    required: true
+    schema:
+      $ref: '#/definitions/Admin-json'
+  user: &user
+    name: user
+    in: body
+    description: The `user` object
+    required: true
+    schema:
+      $ref: '#/definitions/User-post-json'
+  user_patch:
+    <<: *user
+    description: The `user` patch object
+    schema:
+      $ref: '#/definitions/User-json'
+  account: &account
+    name: account
+    in: body
+    description: The `account` object
+    required: true
+    schema:
+      $ref: '#/definitions/Account-json-post'
+  account_patch:
+    <<: *account
+    description: The `account` patch object
+    schema:
+      $ref: '#/definitions/Account-json'
+  card: &card
+    name: card
+    in: body
+    description: The `card` object
+    required: true
+    schema:
+      $ref: '#/definitions/Card-json'
+  card_patch:
+    <<: *card
+    schema:
+      $ref: '#/definitions/Card-json-edit'
+  register: &register
+    name: register
+    in: body
+    description: The `register` object
+    required: true
+    schema:
+      $ref: '#/definitions/Register-json'
+  register_patch:
+    <<: *register
+    schema:
+      $ref: '#/definitions/Register-json-edit'
+  transaction:
+    name: transaction
+    in: body
+    description: The `transaction` object
+    required: true
+    schema:
+      $ref: '#/definitions/Transaction-json'
+  page:
+    name: page
+    in: query
+    description: The page number of the collection
+    required: false
+    type: integer
+    format: int32

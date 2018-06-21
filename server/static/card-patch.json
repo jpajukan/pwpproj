@@ -1,0 +1,17 @@
+{
+  "properties": {
+    "account_id": {
+      "description": "Numeric ID of the `account`",
+      "example": 1,
+      "format": "int64",
+      "type": "integer"
+    },
+    "name": {
+      "description": "Name of the `card`, must be unique within `account` and `user`",
+      "example": "Student card",
+      "maxLength": 64,
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

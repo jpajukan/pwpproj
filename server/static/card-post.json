@@ -1,0 +1,27 @@
+{
+  "properties": {
+    "account_id": {
+      "description": "Numeric ID of the `account`",
+      "example": 1,
+      "format": "int64",
+      "type": "integer"
+    },
+    "card_sha": {
+      "description": "SHA256 hash of the `card`, must be unique",
+      "example": "8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148",
+      "maxLength": 128,
+      "minLength": 64,
+      "type": "string"
+    },
+    "name": {
+      "description": "Name of the `card`, must be unique within `account` and `user`",
+      "example": "Student card",
+      "maxLength": 64,
+      "type": "string"
+    }
+  },
+  "required": [
+    "card_sha"
+  ],
+  "type": "object"
+}

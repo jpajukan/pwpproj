@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "name": {
+      "description": "Name of the `register`, must be unique",
+      "example": "Cafeteria",
+      "maxLength": 64,
+      "type": "string"
+    },
+    "register_sha": {
+      "description": "SHA256 hash of the `register`, must be unique",
+      "example": "acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88",
+      "maxLength": 128,
+      "minLength": 64,
+      "type": "string"
+    },
+    "type": {
+      "default": 0,
+      "description": "Type of the `register`, 0 for regular and 1 for administrative, defaults to 0",
+      "example": 0,
+      "maximum": 1,
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "register_sha",
+    "name"
+  ],
+  "type": "object"
+}

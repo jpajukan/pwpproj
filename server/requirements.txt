@@ -1,0 +1,10 @@
+connexion
+coverage
+Flask-SQLAlchemy
+Flask-HTTPAuth
+passlib
+psycopg2
+ipython
+pytest
+pytest-quickcheck
+pytest-cov

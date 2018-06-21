@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "balance_change": {
+      "description": "Change in the `account` balance",
+      "example": -10.5,
+      "format": "double",
+      "type": "number"
+    },
+    "card_sha": {
+      "description": "SHA256 hash of the `card`",
+      "example": "8a1470b1f84c72f2a733ba485f67a3ec30bfddf2ddce574493cb0365107fc148",
+      "type": "string"
+    },
+    "register_sha": {
+      "description": "SHA256 hash of the `register`",
+      "example": "acdf285926053bcbe9182e18b72062b1fc4d64a3d81e8bff52f399f956a57e88",
+      "type": "string"
+    }
+  },
+  "required": [
+    "card_sha",
+    "register_sha",
+    "balance_change"
+  ],
+  "type": "object"
+}

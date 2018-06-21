@@ -1,0 +1,7 @@
+*.pyc
+*.sw*
+.cache/
+.vagrant/
+.idea
+.coverage
+__pycache__/

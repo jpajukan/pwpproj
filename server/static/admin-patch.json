@@ -1,0 +1,16 @@
+{
+  "properties": {
+    "password": {
+      "description": "Password of the `admin` user",
+      "example": "v3rys3cr3t",
+      "format": "password",
+      "maxLength": 64,
+      "minLength": 8,
+      "type": "string"
+    }
+  },
+  "required": [
+    "password"
+  ],
+  "type": "object"
+}
